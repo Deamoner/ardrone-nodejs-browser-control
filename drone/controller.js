@@ -35,6 +35,17 @@ io.sockets.on('connection', function (socket) {
             console.log("Browser asked Ar Drone to Land");
             client.land();
         }
-
+        if(data.name=="wave"){
+            console.log("Browser asked Ar Drone to wave");
+            client.animate('wave', 3500);
+        }
+        if(data.name=="led"){
+            console.log("Browser asked Ar Drone to led");
+              client.animateLeds('doubleMissile', 5, 7);
+        }
+        if(data.name=="reset"){
+            console.log("Browser asked Ar Drone to reset");
+              client.disableEmergency();
+        }
     });
 });

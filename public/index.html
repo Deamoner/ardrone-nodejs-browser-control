@@ -66,6 +66,18 @@
                     console.log("Asking Server to send land command to Ar Drone");
                     socket.emit('event',{name:"land"});
                 });
+                $("#wave").click(function(){
+                    console.log("Asking Server to wave");
+                    socket.emit('event',{name:"wave"});
+                });
+                $("#led").click(function(){
+                    console.log("Asking Server to led");
+                    socket.emit('event',{name:"led"});
+                });
+                $("#reset").click(function(){
+                    console.log("Asking Server to reset");
+                    socket.emit('event',{name:"reset"});
+                });
 
             }
             startArDRoneStream();
@@ -122,9 +134,11 @@
         <td >
             <button id="takeoff">Take Off</button>
             <button id="spin">Start Spinning</button>
-            <button id="stop">Stop & Hover</button>
+            <button id="stop">Stop  Hover</button>
             <button id="land">Land</button>
-
+            <button id="wave">Wave</button>
+            <button id="led">LED DOUBLE MISSLE</button>
+            <button id="reset">reset!!!</button>
         </td>
         <td>
 
