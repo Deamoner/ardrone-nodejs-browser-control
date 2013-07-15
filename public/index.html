@@ -7,7 +7,6 @@
     <script src="jquery.min.js"></script>
     <script>
         $(function () {
-
             function startArDRoneStream() {
                 new NodecopterStream(document.getElementById("placeholder"), {port: 3001});
             }
@@ -35,6 +34,7 @@
                 navigator.getUserMedia(constraints, successCallback, errorCallback);
 
             }
+          
             function startArDroneController(){
                 var socket = io.connect('http://localhost:3002');
                 socket.on('connect', function () { // TIP: you can avoid listening on `connect` and listen on events directly too!
@@ -49,42 +49,104 @@
                         $("#battery-value").html(data.value+'%');
                     }
                 });
-
-                $("#takeoff").click(function(){
-                    console.log("Asking Server to send takeoff command to Ar Drone");
-                    socket.emit('event',{name:"takeoff"});
+          
+              addButtonListeners(socket);
+              startArDRoneStream();
+              startCameraFeed();
+              startArDroneController();
+              }
+          
+          function addButtonListeners(socket){
+          console.log('adding button listeners');
+              $("#takeoff").click(function(){
+                              console.log("Asking Server to send takeoff command to Ar Drone");
+                              socket.emit('event',{name:"takeoff"});
+                              });
+              $("#spin").click(function(){
+                               console.log("Asking Server to send spin command to Ar Drone");
+                               socket.emit('event',{name:"spin"});
+                               });
+              $("#stop").click(function(){
+                               console.log("Asking Server to send stop command to Ar Drone");
+                               socket.emit('event',{name:"stop"});
+                               });
+              $("#land").click(function(){
+                               console.log("Asking Server to send land command to Ar Drone");
+                               socket.emit('event',{name:"land"});
+                               });
+              $("#wave").click(function(){
+                               console.log("Asking Server to send wave command to Ar Drone");
+                               socket.emit('event',{name:"wave"});
+                               });
+              $("#led").click(function(){
+                              console.log("Asking Server to send led command to Ar Drone");
+                              socket.emit('event',{name:"led"});
+                              });
+              $("#reset").click(function(){
+                                console.log("Asking Server to send reset command to Ar Drone");
+                                socket.emit('event',{name:"reset"});
+                                });
+              $("#config").click(function(){
+                                 console.log("Asking Server to send config command to Ar Drone");
+                                 socket.emit('event',{name:"config"});
+                                 });
+              
+              $("#lower").click(function(){
+                                console.log("Asking Server to send land command to Ar Drone");
+                                socket.emit('event',{name:"lower"});
+                                });
+              $("#raise").click(function(){
+                                console.log("Asking Server to send land command to Ar Drone");
+                                socket.emit('event',{name:"raise"});
+                                });
+              
+              //movement
+              $("#front").click(function(){
+                                console.log("Asking Server to send front command to Ar Drone");
+                                socket.emit('event',{name:"front"});
+                                });
+              $("#back").click(function(){
+                               console.log("Asking Server to send back command to Ar Drone");
+                               socket.emit('event',{name:"back"});
+                               });
+              $("#left").click(function(){
+                               console.log("Asking Server to send left command to Ar Drone");
+                               socket.emit('event',{name:"left"});
+                               });
+              $("#right").click(function(){
+                                console.log("Asking Server to send right command to Ar Drone");
+                                socket.emit('event',{name:"right"});
+                                });
+              //arrow keys
+              $(document).keydown(function(e){
+                if (e.keyCode == 37) {
+                  console.log("Asking Server to send left key command to Ar Drone");
+                  socket.emit('event',{name:"left"});
+                  return false;
+                }
+                if (e.keyCode == 38) {
+                  console.log("Asking Server to send up key command to Ar Drone");
+                  socket.emit('event',{name:"up"});
+                  return false;
+                }
+                if (e.keyCode == 39) {
+                  console.log("Asking Server to send right key command to Ar Drone");
+                  socket.emit('event',{name:"right"});
+                  return false;
+                }
+                if (e.keyCode == 40) {
+                  console.log("Asking Server to send down key command to Ar Drone");
+                  socket.emit('event',{name:"down"});
+                  return false;
+                }
+                if (e.shiftKey) {
+                  console.log("Asking Server to send shift stop key command to Ar Drone");
+                  socket.emit('event',{name:"stop"});
+                  return false;
+                }
                 });
-                $("#spin").click(function(){
-                    console.log("Asking Server to send spin command to Ar Drone");
-                    socket.emit('event',{name:"spin"});
-                });
-                $("#stop").click(function(){
-                    console.log("Asking Server to send stop command to Ar Drone");
-                    socket.emit('event',{name:"stop"});
-                });
-                $("#land").click(function(){
-                    console.log("Asking Server to send land command to Ar Drone");
-                    socket.emit('event',{name:"land"});
-                });
-                $("#wave").click(function(){
-                    console.log("Asking Server to wave");
-                    socket.emit('event',{name:"wave"});
-                });
-                $("#led").click(function(){
-                    console.log("Asking Server to led");
-                    socket.emit('event',{name:"led"});
-                });
-                $("#reset").click(function(){
-                    console.log("Asking Server to reset");
-                    socket.emit('event',{name:"reset"});
-                });
-
-            }
-            startArDRoneStream();
-            startCameraFeed();
-            startArDroneController();
-
-        })
+          }
+          });
     </script>
     <style>
         td {
@@ -131,14 +193,25 @@
 <h4>Built using nodejs, socket.io, node-ar-drone and dronestream - By Rohit Ghatol</h4>
 <table>
     <tr>
-        <td >
+        <td>
             <button id="takeoff">Take Off</button>
-            <button id="spin">Start Spinning</button>
-            <button id="stop">Stop  Hover</button>
+            <button id="stop">Stop &amp; Hover</button>
             <button id="land">Land</button>
+            <button id="reset">reset (after crashing)</button>
+            <button id="config">config (smoother flying)</button>
+         
+            <label>Movement</label>
+            <button id="front">Front</button>
+            <button id="back">Back</button>
+            <button id="left">Left</button>
+            <button id="right">Right</button>
+            <button id="raise">Raise</button>
+            <button id="lower">Lower</button>
+            
+            <label>Extras</label>
+            <button id="spin">Start Spinning</button>
             <button id="wave">Wave</button>
-            <button id="led">LED DOUBLE MISSLE</button>
-            <button id="reset">reset!!!</button>
+            <button id="led">LED DOUBLE MISSLE</button>         
         </td>
         <td>
 
